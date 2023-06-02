@@ -50,7 +50,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         text-sm w-fit overflow-hidden
     `,
         isOwn ? 'bg-sky-500 text-white' : 'bg-gray-100',
-        data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'
+        data.image ? 'rounded-md p-0' : 'rounded-md py-2 px-3'
     );
 
     return (
