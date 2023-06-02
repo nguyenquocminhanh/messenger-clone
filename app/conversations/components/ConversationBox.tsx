@@ -77,6 +77,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 transition
                 cursor-pointer
                 p-3
+                pr-8
             `,
                 selected ? 'bg-neutral-100' : 'bg-white'
             )
@@ -119,7 +120,6 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                     <p  className={clsx(`
                         truncate
                         text-sm
-                        pr-8
                     `,
                             hasSeen ? 'text-gray-500' : 'text-black font-medium'
                     )}>
@@ -130,7 +130,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 </div>
             </div>
 
-            {!hasSeen && (
+            {!hasSeen && lastMessage && (
                 <span className="
                     absolute
                     block
