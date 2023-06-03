@@ -34,11 +34,12 @@ export async function POST(
                 users: {
                     // add all member is to users[]
                     connect: [
+                        {
+                            id: currentUser.id
+                        },
                        ...members.map((member: { value: string }) => ({
                         id: member.value
-                       })), {
-                        id: currentUser.id
-                       }
+                       }))
                     ]
                 }
             },

@@ -53,3 +53,59 @@ export async function DELETE(
         return new NextResponse('Internal Error', { status: 500 });
     }
 }
+
+
+export async function PUT(
+    request: Request,
+    { params }: { params: IParams }
+) {
+    try {
+        const { conversationId } = params;
+        const currentUser = await getCurrentUser();
+        const body = await request.json();
+        const {
+            name,
+            members,
+            isGroup
+        } = body;
+
+        if (!currentUser?.id) {
+            return new NextResponse('Unauthorized', { status: 401 })
+        }
+
+        if (isGroup) {
+            const updatedConversation = await prisma.conversation.update({
+                where: {
+                    id: conversationId
+                },
+                include: {
+                    users: true,
+                    messages: true
+                },
+                data: {
+                    users: {
+                        // add userId Id to userIds
+                        connect: [
+                            ...members.map((member: { value: string }) => ({
+                                id: member.value
+                            }))
+                        ]
+                    }
+                }  
+            });
+
+            updatedConversation.users.forEach((user) => {
+                if (user.email) {
+                    pusherServer.trigger(user.email, 'conversation:new', updatedConversation);
+                }
+            })
+
+            return NextResponse.json(updatedConversation);
+        }
+
+        return new NextResponse('Internal Error', { status: 500 })
+    } catch (error: any) {
+        console.log(error, 'ERROR_CONVERSATION_DELETE');
+        return new NextResponse('Internal Error', { status: 500 });
+    }
+}

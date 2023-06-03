@@ -13,17 +13,26 @@ import useActiveList from "@/app/hooks/useActiveList";
 
 interface HeaderProps {
     conversation: Conversation & {
-        users: User[]
-    }
+        users: User[];
+    };
+    allUsers: User[]
 }
 
 const Header: React.FC<HeaderProps> = ({
-    conversation
+    conversation,
+    allUsers
 }) => {
     const otherUser = useOtherUser(conversation);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const { members } = useActiveList();
     const isActive = members.indexOf(otherUser?.email!) !== -1;
+
+    const outOfGroupUsers = useMemo(() => {
+        if (allUsers.length > 0 && conversation.users.length > 0) {
+            return allUsers.filter((user) => !conversation.users.some(item => item.id === user.id));
+        }
+        return [];
+    }, [allUsers, conversation.users])
 
     const statusText = useMemo(() => {
         if (conversation.isGroup) {
@@ -39,6 +48,7 @@ const Header: React.FC<HeaderProps> = ({
                 data={conversation}
                 isOpen={drawerOpen}
                 onClose={() => setDrawerOpen(false)}
+                outOfGroupUsers={outOfGroupUsers}
             />
 
             <div className="bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm">

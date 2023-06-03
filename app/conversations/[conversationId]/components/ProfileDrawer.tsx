@@ -7,25 +7,31 @@ import { format } from "date-fns";
 import { Conversation, User } from "prisma/prisma-client";
 import { Fragment, useMemo, useState } from "react";
 import { IoClose, IoTrash } from "react-icons/io5"
-import ConfirmModal from "./ConfirmModal";
+import { MdOutlineGroupAdd } from "react-icons/md";
+import { IoExitOutline } from "react-icons/io5"
+import ConfirmModal from "../../../components/ConfirmModal";
 import AvatarGroup from "@/app/components/AvatarGroup";
 import useActiveList from "@/app/hooks/useActiveList";
+import InviteModal from "@/app/components/InviteModal";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
     onClose: () => void;
     data: Conversation & {
         users: User[]
-    }
+    };
+    outOfGroupUsers: User[]
 }
 
 const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
     isOpen,
     onClose,
-    data
+    data,
+    outOfGroupUsers
 }) => {
     const otherUser = useOtherUser(data);
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [inviteOpen, setInviteOpen] = useState(false);
     const { members } = useActiveList();
     const isActive = members.indexOf(otherUser?.email!) !== -1;
 
@@ -50,6 +56,14 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
         <ConfirmModal
             isOpen={confirmOpen}
             onClose={() => setConfirmOpen(false)}
+        />
+
+        <InviteModal
+            isOpen={inviteOpen}
+            onClose={() => setInviteOpen(false)}
+            users={outOfGroupUsers}
+            conversationName={data.name || undefined}
+            conversationId={data.id || undefined}
         />
 
         <Transition.Root 
@@ -195,6 +209,32 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                                 Delete
                                                             </div>
                                                         </div>
+
+                                                        {data.isGroup && 
+                                                            <div onClick={() => {setInviteOpen(true)}} className="
+                                                                flex
+                                                                flex-col
+                                                                gap-3
+                                                                items-center
+                                                                cursor-pointer
+                                                                hover:opacity-75
+                                                            ">
+                                                                <div className="
+                                                                    w-10
+                                                                    h-10
+                                                                    bg-neutral-100
+                                                                    rounded-full
+                                                                    flex
+                                                                    items-center
+                                                                    justify-center
+                                                                ">
+                                                                    <MdOutlineGroupAdd size={20}/>
+                                                                </div>
+                                                                <div className="text-sm font-light text-neutral-600">
+                                                                    Invite
+                                                                </div>
+                                                            </div>
+                                                        }
                                                     </div>
 
                                                     <div className="
@@ -219,7 +259,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                                         sm:w-40
                                                                         sm:flex-shrink-0
                                                                     ">
-                                                                        Emails
+                                                                        Members
                                                                     </dt>
                                                                     <dd className="
                                                                         mt-1
@@ -227,7 +267,11 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                                         text-gray-900
                                                                         sm:col-span-2
                                                                     ">
-                                                                        {data.users.map((user) => user.email).join(', ')}
+                                                                        {data.users.map((user) => (
+                                                                            <div>
+                                                                                <span><b>{user.name}: </b>{user.email}</span>
+                                                                            </div>
+                                                                        ))}
                                                                     </dd>
                                                                 </div>
                                                             )}
