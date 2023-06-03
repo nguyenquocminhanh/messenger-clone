@@ -72,7 +72,7 @@ const UserList: React.FC<UserListProps> = ({
                     </div> 
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-100 rounded-full p-2 flex items-center">
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-gray-100 rounded-full mb-2 p-2 flex items-center">
                     <input id="searchKeyWord" {...register("searchKeyWord", { required: true })} type="text" className="bg-transparent outline-none ml-2 flex-grow" placeholder="Search..."/>
                     <button className="bg-transparent border-none">
                         <AiOutlineSearch />
