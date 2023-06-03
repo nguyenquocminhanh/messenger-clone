@@ -268,7 +268,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                                         sm:col-span-2
                                                                     ">
                                                                         {data.users.map((user) => (
-                                                                            <div>
+                                                                            <div key={user.id}>
                                                                                 <span><b>{user.name}: </b>{user.email}</span>
                                                                             </div>
                                                                         ))}
