@@ -5,7 +5,7 @@ import Input from "@/app/components/inputs/Input";
 import AuthSocialButton from './AuthSocialButton';
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import { BsGithub, BsGoogle, BsFacebook } from 'react-icons/bs';
+import { BsGithub, BsGoogle, BsFacebook, BsApple } from 'react-icons/bs';
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -191,10 +191,10 @@ const AuthForm = () => {
                             flex
                             gap-2
                         ">
-                            <AuthSocialButton
-                                icon={BsFacebook}
-                                onClick={() => socialAction('facebook')}
-                            />
+                            {/* <AuthSocialButton
+                                icon={BsApple}
+                                onClick={() => socialAction('apple')}
+                            /> */}
 
                             <AuthSocialButton
                                 icon={BsGoogle}
