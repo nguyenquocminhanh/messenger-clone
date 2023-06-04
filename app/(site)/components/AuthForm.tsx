@@ -5,7 +5,7 @@ import Input from "@/app/components/inputs/Input";
 import AuthSocialButton from './AuthSocialButton';
 import { useCallback, useEffect, useState } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
-import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { BsGithub, BsGoogle, BsFacebook } from 'react-icons/bs';
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
@@ -192,13 +192,18 @@ const AuthForm = () => {
                             gap-2
                         ">
                             <AuthSocialButton
-                                icon={BsGithub}
-                                onClick={() => socialAction('github')}
+                                icon={BsFacebook}
+                                onClick={() => socialAction('facebook')}
                             />
 
                             <AuthSocialButton
                                 icon={BsGoogle}
                                 onClick={() => socialAction('google')}
+                            />
+
+                            <AuthSocialButton
+                                icon={BsGithub}
+                                onClick={() => socialAction('github')}
                             />
                         </div>
                     </div>
